@@ -1,0 +1,31 @@
+{
+  "name": "deploy",
+  "version": "0.1.0",
+  "bin": {
+    "deploy": "bin/deploy.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "test": "mocha -r ts-node/register test/unit/"
+  },
+  "devDependencies": {
+    "@types/node": "12.7.2",
+    "typescript": "^3.5.3",
+    "ts-node": "^8.3.0",
+    "aws-cdk": "^1.4.0"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "^1.4.0",
+    "@aws-cdk/aws-codepipeline-actions": "^1.4.0",
+    "@aws-cdk/aws-events": "^1.4.0",
+    "@aws-cdk/aws-events-targets": "^1.4.0",
+    "@aws-cdk/aws-iam": "^1.4.0",
+    "@aws-cdk/aws-lambda": "^1.4.0",
+    "@aws-cdk/core": "^1.4.0",
+    "@types/mocha": "^5.2.7",
+    "mocha": "^6.2.0",
+    "source-map-support": "^0.5.13"
+  }
+}
