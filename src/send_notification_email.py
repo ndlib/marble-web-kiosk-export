@@ -33,6 +33,7 @@ def _create_email_html_body(missing_fields):
 
 
 def _send_email(sender, recipients, subject, body_html, body_text):
+    """ Actually send the email. """
     AWS_REGION = "us-east-1"
     CHARSET = "UTF-8"
     client = boto3.client('ses', region_name=AWS_REGION)

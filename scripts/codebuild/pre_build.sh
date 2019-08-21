@@ -3,76 +3,15 @@ magenta=tput setaf 5
 reset=tput sgr0
 echo -e "\n\n ${magenta}----- PRE_BUILD.SH ------${reset}"
 
-verify_ssm_parameter () {
-echo "Ready to check existance of Parameter Store name: $1"
-# ssm_param_length=$(aws ssm describe-parameters --filters "Key=Name,Values=$1" | jq '.Parameters | length')
-# because of continued throttling errors with the above call, I'm trying the below call
-ssm_param_length=$(aws ssm get-parameter --name $1 | jq '.Parameter | length')  || { echo "Failed testing Parameter Store value $1."; exit 1; }
-# potential other option would be to use: aws ssm get-parameter --name $1
-# Verify that ssm_param_length is a number.  If not, we likely don't have permission to access ssm.  Question AWS-Vault access.
-re='^[0-9]+$'
-if ! [[ $ssm_param_length =~ $re ]] ; then
-   echo "Unable to access SSM to read value of $1.  If running locally, verify AWS-Vault access, otherwise, verify Policy has access to ssm:DescribeParameters." >&2; exit 1
+if [ -f "validate_parameter_store_entries.sh" ]; then
+    v_path=.
+else
+    v_path=./scripts/codebuild
 fi
 
-# If parameter length is 0, the required key does not exist in Parameter Store - throw an error.
-if [ "$ssm_param_length" = "0" ]
-then
-         echo "Missing Parameter Store key: $1"
-         exit 1
-else echo "$1  exists.  Param_Length = $ssm_param_length. "
-    sleep 1 # add wait to avoid throttling
-fi
-}
+$v_path/validate_parameter_store_entries.sh || { echo "Failed Validating Parameter Store Entries."; exit 1; }
 
-echo “${magenta}----- Verifying Parameter Store Entries Exist ------${reset}”
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/type"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/project_id"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/private_key_id"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/private_key"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/client_email"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/client_id"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/auth_uri"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/token_uri"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/auth_provider_x509_cert_url"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/credentials/client_x509_cert_url"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/metadata/drive-id"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/metadata/parent-folder-id"
-verify_ssm_parameter "/all/marble-embark-loader/test/google/image/drive-id"
-# verify_ssm_parameter "/all/marble-embark-loader/test/google/image/parent-folder-id"
-verify_ssm_parameter "/all/marble-embark-loader/test/embark/server-address"
-verify_ssm_parameter "/all/marble-embark-loader/test/embark/remote-server-username"
-verify_ssm_parameter "/all/marble-embark-loader/test/embark/remote-server-password"
-verify_ssm_parameter "/all/marble-embark-loader/test/sentry/environment"
-verify_ssm_parameter "/all/marble-embark-loader/test/sentry/dsn"
-verify_ssm_parameter "/all/marble-embark-loader/test/sentry/token"
-verify_ssm_parameter "/all/marble-embark-loader/test/notification-email-address"
-verify_ssm_parameter "/all/marble-embark-loader/test/no-reply-email-address"
-
-
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/type"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/project_id"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/private_key_id"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/private_key"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/client_email"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/client_id"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/auth_uri"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/token_uri"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/auth_provider_x509_cert_url"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/credentials/client_x509_cert_url"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/metadata/drive-id"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/metadata/parent-folder-id"
-verify_ssm_parameter "/all/marble-embark-loader/prod/google/image/drive-id"
-# verify_ssm_parameter "/all/marble-embark-loader/prod/google/image/parent-folder-id"
-verify_ssm_parameter "/all/marble-embark-loader/prod/embark/server-address"
-verify_ssm_parameter "/all/marble-embark-loader/prod/embark/remote-server-username"
-verify_ssm_parameter "/all/marble-embark-loader/prod/embark/remote-server-password"
-verify_ssm_parameter "/all/marble-embark-loader/prod/sentry/environment"
-verify_ssm_parameter "/all/marble-embark-loader/prod/sentry/dsn"
-verify_ssm_parameter "/all/marble-embark-loader/prod/sentry/token"
-verify_ssm_parameter "/all/marble-embark-loader/prod/notification-email-address"
-verify_ssm_parameter "/all/marble-embark-loader/prod/no-reply-email-address"
-
+echo -e "\n\n ${magenta}----- Set Environment Variables in PRE_BUILD.SH ------${reset}"
 
 # Environment Variable SSM_KEY_BASE is required to run python tests.
 if [ -z "$SSM_KEY_BASE" ]
@@ -95,7 +34,7 @@ then
 fi
 
 # remove any existing function.zip file representing a previous deploy execution
-if [ -f "src/function.zip"]
+if [ -f "src/function.zip" ]
 then
     rm src/function.zip || { echo "rm src/function.zip Failed"; exit 1; }
 fi

@@ -9,10 +9,11 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from process_web_kiosk_metadata import process_web_kiosk_metadata  # noqa: E402
 from get_config import get_config  # noqa: E402
 
+config = get_config()
+
 
 def run(event, context):
     """ run the process to retrieve and process web kiosk metadata """
-    config = get_config()
     if config != {}:
         sentry_error_dsn = config['sentry']['dsn']
         sentry_environment = config['sentry']['environment']
