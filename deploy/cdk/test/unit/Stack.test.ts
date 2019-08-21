@@ -25,52 +25,101 @@ describe('Test Marble Web Kiosk Export Stack', () => {
     });
 
 
-    it('Should have a Policy Statement granting access to \'ssm:DescribeParameters\'.', () => {
+    it('Should have a Policy Statement granting access to logs, ssm, and ses.', () => {
         assert.expect(MyStack).to(assert.haveResource("AWS::IAM::Policy",{
             PolicyDocument: {
-              "Statement": [
-                {
-                  "Action": [
-                    "ssm:DescribeParameters",
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": "*"
-                },
-                {
-                  "Action": [
-                    "ssm:GetParameterHistory",
-                    "ssm:GetParametersByPath",
-                    "ssm:GetParameters",
-                    "ssm:GetParameter",
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/*"
+                "Statement": [
+                  {
+                    "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
+                    }
+                  },
+                  {
+                    "Action": [
+                      "ssm:GetParameterHistory",
+                      "ssm:GetParametersByPath",
+                      "ssm:GetParameters",
+                      "ssm:GetParameter"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": {
+                      "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-embark-loader/*"
+                    }
+                  },
+                  {
+                    "Action": "ssm:DescribeParameters",
+                    "Effect": "Allow",
+                    "Resource": "*"
+                  },
+                  {
+                    "Action": [
+                      "kms:Decrypt",
+                      "kms:Encrypt"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": {
+                      "Fn::Sub": "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/CMK"
+                    }
+                  },
+                  {
+                    "Action": "ses:SendEmail",
+                    "Effect": "Allow",
+                    "Resource": {
+                      "Fn::Sub": "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/nd.edu"
+                    }
                   }
-                },
-                {
-                  "Action": [
-                    "kms:Decrypt",
-                    "kms:Encrypt"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Sub": "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/CMK"
-                  }
-                },
-                {
-                  "Action": "ses:SendEmail",
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::Sub": "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/nd.edu"
-                  }
-                }
-              ],
-             "Version": "2012-10-17"
-            }
+                ],
+                "Version": "2012-10-17"
+              },
+            //   "Statement": [
+            //     {
+            //       "Action": [
+            //         "ssm:DescribeParameters",
+            //         "logs:CreateLogGroup",
+            //         "logs:CreateLogStream",
+            //         "logs:PutLogEvents"
+            //       ],
+            //       "Effect": "Allow",
+            //       "Resource": "*"
+            //     },
+            //     {
+            //       "Action": [
+            //         "ssm:GetParameterHistory",
+            //         "ssm:GetParametersByPath",
+            //         "ssm:GetParameters",
+            //         "ssm:GetParameter",
+            //       ],
+            //       "Effect": "Allow",
+            //       "Resource": {
+            //         "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/*"
+            //       }
+            //     },
+            //     {
+            //       "Action": [
+            //         "kms:Decrypt",
+            //         "kms:Encrypt"
+            //       ],
+            //       "Effect": "Allow",
+            //       "Resource": {
+            //         "Fn::Sub": "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/CMK"
+            //       }
+            //     },
+            //     {
+            //       "Action": "ses:SendEmail",
+            //       "Effect": "Allow",
+            //       "Resource": {
+            //         "Fn::Sub": "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/nd.edu"
+            //       }
+            //     }
+            //   ],
+            //  "Version": "2012-10-17"
+            // }
         }
     ))
     });

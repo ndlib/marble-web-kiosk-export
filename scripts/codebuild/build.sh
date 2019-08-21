@@ -7,7 +7,7 @@ echo -e "\n\n ${magenta}----- BUILD.SH ------${reset}"
 
 pushd deploy/cdk
 # make sure we have the latest version of npm
-npm install -g npm
+# npm install -g npm
 npm run build || { echo "Build typescript to javascript failed"; exit 1; }
 cdk synth -o ../../dist  || { echo "Synthesizing cloud formation failed"; exit 1; }
 popd

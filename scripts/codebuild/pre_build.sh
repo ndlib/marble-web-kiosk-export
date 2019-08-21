@@ -21,7 +21,7 @@ then
          echo "Missing Parameter Store key: $1"
          exit 1
 else echo "$1  exists.  Param_Length = $ssm_param_length. "
-    sleep 2 # add wait to avoid throttling
+    sleep 1 # add wait to avoid throttling
 fi
 }
 

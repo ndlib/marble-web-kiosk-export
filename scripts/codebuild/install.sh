@@ -4,4 +4,4 @@ reset=`tput sgr0`
 
 echo "\n\n ${magenta}----- INSTALL.SH -----${reset}"
 
-npm install -g aws-cdk  || { echo "CDK install failed"; exit 1; }
+npm install aws-cdk  || { echo "CDK install failed"; exit 1; }

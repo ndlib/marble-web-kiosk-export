@@ -11,12 +11,10 @@ certifi==2019.6.16
 cffi==1.12.2
 chardet==3.0.4
 Click==7.0
-coverage==4.5.3
 crypto==1.4.1
 cryptography==2.6.1
 docutils==0.14
 entrypoints==0.3
-flake8==3.7.7
 Flask==1.0.3
 google==2.0.2
 google-api-python-client==1.7.9

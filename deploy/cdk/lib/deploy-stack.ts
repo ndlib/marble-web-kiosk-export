@@ -31,22 +31,29 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
         roles: [embarkLambdaRole]
     });
 
-    // Grant access to list Parameter Store parameters and access Cloud Watch logs
+    // Grant access to access Cloud Watch logs
     embarkLambdaPolicy.addStatements(new iam.PolicyStatement({
-        resources:['*'],
-        actions: ['ssm:DescribeParameters',
-          'logs:CreateLogGroup',
+        // resources:['*'],
+        resources: [cdk.Fn.sub('arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*')],
+        actions: ['logs:CreateLogGroup',
           'logs:CreateLogStream',
           'logs:PutLogEvents'],
     }));
 
     // Grant access to read and set Parameter Store parameters
     embarkLambdaPolicy.addStatements(new iam.PolicyStatement({
-        resources:[cdk.Fn.sub('arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/*')],
+        resources:[cdk.Fn.sub('arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-embark-loader/*')],
         actions: ["ssm:GetParameterHistory",
             "ssm:GetParametersByPath",
             "ssm:GetParameters",
             "ssm:GetParameter",
+        ],
+    }));
+
+    // Grant access to Describe  Parameter Store parameters
+    embarkLambdaPolicy.addStatements(new iam.PolicyStatement({
+        resources:['*'],
+        actions: ['ssm:DescribeParameters',
         ],
     }));
 

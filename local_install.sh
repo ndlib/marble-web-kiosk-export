@@ -30,7 +30,7 @@ popd
 
 python -m venv venv
 source venv/bin/activate
-pip install --upgrade pip
+# pip install --upgrade pip
 pip install -r requirements.txt
 
 # install dependencies in dependencies folder that will need to be included with deployed lambda
