@@ -3,8 +3,9 @@
 
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-
+where_i_am = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(where_i_am)
+sys.path.append(where_i_am + "/dependencies")
 from google.oauth2 import service_account  # noqa: E402
 from googleapiclient.discovery import build  # noqa: E402
 from googleapiclient.http import MediaFileUpload  # noqa: E402
