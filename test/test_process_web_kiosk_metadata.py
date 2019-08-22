@@ -2,7 +2,10 @@
 """ test create_new_index_record """
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+# sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+where_i_am = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(where_i_am)
+sys.path.append(where_i_am + "/dependencies")
 import unittest  # noqa: E402
 from src.process_web_kiosk_metadata import process_web_kiosk_metadata  # noqa: E402
 from src.get_config import get_config  # noqa: E402
