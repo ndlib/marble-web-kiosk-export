@@ -31,6 +31,7 @@ then
     python --version
     source venv/bin/activate
     python 'run_all_tests.py' || { echo “Unit Tests Failed”; exit 1; }
+    # source deactivate
 fi
 
 # remove any existing function.zip file representing a previous deploy execution
@@ -39,13 +40,9 @@ then
     rm src/function.zip || { echo "rm src/function.zip Failed"; exit 1; }
 fi
 
-# create initial zip containing any dependencies
-pushd dependencies
-zip -r9 ../src/function.zip . || { echo "zip -r9 ../src/function.zip . Failed"; exit 1; }
+# create zip file containing our code and required dependencies to deploy for our lambda
+pushd src
+zip -g -r function.zip . || { echo "zip -g -r function.zip . Failed"; exit 1; }
 popd
 
-# add to the zip our python code for this project
-pushd src
-zip -g function.zip *.py || { echo "zip -g function.zip *.py Failed"; exit 1; }
-popd
 # Assert:  We now have a zip of the lambda and dependencies which we will want to deploy

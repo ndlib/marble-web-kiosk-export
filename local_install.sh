@@ -28,18 +28,10 @@ npx npm-check-updates -u
 npm install || { echo "Npm install failed to install updates"; exit 1; }
 popd
 
-python -m venv venv
-source venv/bin/activate
-# pip install --upgrade pip
-pip install -r requirements.txt
-
+pushd src
 # install dependencies in dependencies folder that will need to be included with deployed lambda
 mkdir dependencies
-pushd dependencies
-# install Google API
-pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib -t .
-
-# install Sentry sdk
-pip install --upgrade sentry_sdk -t .
 popd
-# source deactivate
+
+# install dependencies into src/dependencies folder
+pip install -r requirements.txt -t ./src/dependencies

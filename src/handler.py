@@ -3,9 +3,12 @@
 
 import os
 import sys
-from sentry_sdk import init
-from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+# sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+where_i_am = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(where_i_am)
+sys.path.append(where_i_am + "/dependencies")
+from sentry_sdk import init  # noqa: E402
+from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration  # noqa: E402
 from process_web_kiosk_metadata import process_web_kiosk_metadata  # noqa: E402
 from get_config import get_config  # noqa: E402
 

@@ -19,7 +19,7 @@ verify_parameter_store_value_exists () {
 # Verify that parameter_length is a number.  If not, we likely don't have permission to access ssm.
 re='^[0-9]+$'
 if ! [[ $parameter_length =~ $re ]] ; then
-   echo "Unable to access SSM to read value of $1.  If running locally, verify AWS-Vault access, otherwise, verify Policy has access to ssm:GetParametersByPath." >&2; exit 1
+   echo "Unable to access SSM to read value of $1.  If running locally, verify AWS-Vault access, otherwise, verify Policy has access to ssm:GetParametersByPath."; exit 1
 fi
 
 # If parameter length is 0, the required key does not exist in Parameter Store - throw an error.
