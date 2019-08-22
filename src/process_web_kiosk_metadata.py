@@ -6,13 +6,13 @@
 
 from urllib import request, error
 from datetime import datetime, timedelta
-from sentry_sdk import capture_message, push_scope, capture_exception
-from xml.etree.ElementTree import ElementTree, register_namespace, iterparse
 import os
 import sys
 where_i_am = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(where_i_am)
 sys.path.append(where_i_am + "/dependencies")
+from sentry_sdk import capture_message, push_scope, capture_exception  # noqa: E402
+from xml.etree.ElementTree import ElementTree, register_namespace, iterparse   # noqa: E402
 from save_to_google_team_drive import save_file_to_google_team_drive  # noqa: E402
 from file_system_utilities import delete_file, get_full_path_file_name  # noqa: E402  create_directory,
 from send_notification_email import create_and_send_email_notification  # noqa: E402

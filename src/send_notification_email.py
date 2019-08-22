@@ -1,12 +1,14 @@
 # send_notification_email.py
 """ This routine sends and email alerting the user of missing fields. """
 
-import boto3
-from botocore.errorfactory import ClientError
-from sentry_sdk import capture_exception
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+where_i_am = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(where_i_am)
+sys.path.append(where_i_am + "/dependencies")
+import boto3  # noqa: E402
+from botocore.errorfactory import ClientError  # noqa: E402
+from sentry_sdk import capture_exception  # noqa: E402
 
 
 def create_and_send_email_notification(missing_fields, notification_email_address, sender):
