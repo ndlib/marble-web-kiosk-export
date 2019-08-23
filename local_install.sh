@@ -28,10 +28,14 @@ npx npm-check-updates -u
 npm install || { echo "Npm install failed to install updates"; exit 1; }
 popd
 
+#install boto3 in a virtual environment - we don't want to include it in the lambda deploy
+python -m venv venv
+pip install -r requirements.txt
+
 pushd src
 # install dependencies in dependencies folder that will need to be included with deployed lambda
 mkdir dependencies
-popd
 
 # install dependencies into src/dependencies folder
-pip install -r requirements.txt -t ./src/dependencies
+pip install -r requirements.txt -t ./dependencies
+popd
