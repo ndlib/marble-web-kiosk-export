@@ -30,7 +30,9 @@ popd
 
 #install boto3 in a virtual environment - we don't want to include it in the lambda deploy
 python -m venv venv
-pip install -r requirements.txt
+source venv/bin/activate
+pip install -r requirements.txt  || { echo "Failed to install requirements.txt into virtual directory venv."; exit 1; }
+source deactivate
 
 pushd src
 # install dependencies in dependencies folder that will need to be included with deployed lambda
