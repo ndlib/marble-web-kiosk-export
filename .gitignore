@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/
@@ -126,3 +126,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# items to ignore specific to this project
+dependencies
+src/*.zip
