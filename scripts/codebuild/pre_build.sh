@@ -33,16 +33,3 @@ then
     python 'run_all_tests.py' || { echo “Unit Tests Failed”; exit 1; }
     source deactivate
 fi
-
-# remove any existing function.zip file representing a previous deploy execution
-if [ -f "src/function.zip" ]
-then
-    rm src/function.zip || { echo "rm src/function.zip Failed"; exit 1; }
-fi
-
-# create zip file containing our code and required dependencies to deploy for our lambda
-pushd src
-zip -g -r function.zip . || { echo "zip -g -r function.zip . Failed"; exit 1; }
-popd
-
-# Assert:  We now have a zip of the lambda and dependencies which we will want to deploy

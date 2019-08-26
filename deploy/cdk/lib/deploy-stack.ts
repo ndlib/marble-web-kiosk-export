@@ -8,7 +8,6 @@ import targets = require('@aws-cdk/aws-events-targets');
 
 
 export class MarbleWebKioskExportStack extends cdk.Stack {
-    public readonly lambdaCode: lambda.CfnParametersCode; // Expose this so pipeline can later write to it to pass in code for Lambda
 
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
       const stackName = id + '-stack'
@@ -16,13 +15,10 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
 
     const stage = process.env.STAGE || 'dev'
 
-    this.lambdaCode = lambda.Code.cfnParameters()
-
     // Create a role for this Lambda
     const embarkLambdaRole = new iam.Role(this, 'LambdaTrustRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         roleName:  id + '-role',
-        // inlinePolicies: [embarkLambdaPolicy]
     });
 
 
@@ -33,7 +29,6 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
 
     // Grant access to access Cloud Watch logs
     embarkLambdaPolicy.addStatements(new iam.PolicyStatement({
-        // resources:['*'],
         resources: [cdk.Fn.sub('arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*')],
         actions: ['logs:CreateLogGroup',
           'logs:CreateLogStream',
@@ -67,10 +62,7 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
 
       // Define Lambda itself
       const embarkLambda = new lambda.Function(this, 'EmbarkLambda', {
-          //code: this.lambdaCode,
-          // Note replace below with above to use code inserted from pipeline instead of local src/ code.
-          // code: lambda.Code.asset("../src"),
-          code: lambda.Code.asset("../../src/function.zip"),
+          code: lambda.Code.fromAsset("../../src"),
           handler: 'handler.run',
           runtime: lambda.Runtime.PYTHON_3_7,
           functionName: id, // 'marble-web-kiosk-export',
