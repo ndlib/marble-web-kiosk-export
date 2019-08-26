@@ -47,13 +47,7 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
             "ssm:GetParametersByPath",
             "ssm:GetParameters",
             "ssm:GetParameter",
-        ],
-    }));
-
-    // Grant access to Describe  Parameter Store parameters
-    embarkLambdaPolicy.addStatements(new iam.PolicyStatement({
-        resources:['*'],
-        actions: ['ssm:DescribeParameters',
+            "ssm:DescribeParameters"
         ],
     }));
 

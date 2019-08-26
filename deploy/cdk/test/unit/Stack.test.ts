@@ -45,17 +45,13 @@ describe('Test Marble Web Kiosk Export Stack', () => {
                       "ssm:GetParameterHistory",
                       "ssm:GetParametersByPath",
                       "ssm:GetParameters",
-                      "ssm:GetParameter"
+                      "ssm:GetParameter",
+                      "ssm:DescribeParameters",
                     ],
                     "Effect": "Allow",
                     "Resource": {
                       "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-embark-loader/*"
                     }
-                  },
-                  {
-                    "Action": "ssm:DescribeParameters",
-                    "Effect": "Allow",
-                    "Resource": "*"
                   },
                   {
                     "Action": [
