@@ -22,7 +22,7 @@ def create_and_send_email_notification(missing_fields, notification_email_addres
 
 def _create_email_html_body(missing_fields):
     """ Create the body of the email in html format """
-    # self.config['notification-email-address']
+    # self.config['museum-notification-email-address']
     body_html = """<html>
     <head></head>
     <body>

@@ -37,7 +37,7 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
 
     // Grant access to read and set Parameter Store parameters
     embarkLambdaPolicy.addStatements(new iam.PolicyStatement({
-        resources:[cdk.Fn.sub('arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-embark-loader/*')],
+        resources:[cdk.Fn.sub('arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-data-processing/*')],
         actions: ["ssm:GetParameterHistory",
             "ssm:GetParametersByPath",
             "ssm:GetParameters",
@@ -76,7 +76,7 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
           //         'google', cdk.Fn.importValue('google-api-python-layer:LayerArn'))
           // ],
           environment: {
-              SSM_KEY_BASE: `/all/marble-embark-loader/${stage === 'prod' ? 'prod' : 'test'}`,
+              SSM_KEY_BASE: `/all/marble-data-processing/${stage === 'prod' ? 'prod' : 'test'}`,
               WEB_KIOSK_EXPORT_MODE: 'incremental'
           },
           role: embarkLambdaRole,

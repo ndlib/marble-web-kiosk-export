@@ -35,7 +35,7 @@ def run(event, context):
 # setup:
 # cd marble-web-kiosk-export
 # aws-vault exec testlibnd-superAdmin --session-ttl=1h --assume-role-ttl=1h --
-# export SSM_KEY_BASE=/all/marble-embark-loader/test
+# export SSM_KEY_BASE=/all/marble-data-processing/test
 # export WEB_KIOSK_EXPORT_MODE=incremental
 # python -c 'from src.handler import *; test()'
 # python 'run_all_tests.py'

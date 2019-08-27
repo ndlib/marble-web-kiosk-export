@@ -50,7 +50,7 @@ describe('Test Marble Web Kiosk Export Stack', () => {
                     ],
                     "Effect": "Allow",
                     "Resource": {
-                      "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-embark-loader/*"
+                      "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/all/marble-data-processing/*"
                     }
                   },
                   {

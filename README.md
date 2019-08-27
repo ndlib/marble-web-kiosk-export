@@ -9,29 +9,29 @@ This code splits that content into individual METS files, and stores them by Id 
 
 ## Installation
 1. Store configuration settings in Parameter Store.
-  (Actual values for Hesburgh Libraries are stored on CorpFS under /Library/Departmental/Infrastructure/vars/DLT/secret_prod/marble-embark-loader)
+  (Actual values for Hesburgh Libraries are stored on CorpFS under /Library/Departmental/Infrastructure/vars/DLT/secret_prod/marble-data-processing)
 
   | Key | Description | Example Create |
 |----|-----------|------ |
-|google/credentials/type|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/type", "Value": "service_account", "Type": "SecureString"}' --overwrite|
-|google/credentials/project_id|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/project_id", "Value": "webkiosk", "Type": "SecureString"}' --overwrite|
-|google/credentials/private_key_id|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/private_key_id", "Value": "your-private-key-id-here", "Type": "SecureString"}' --overwrite|
-|google/credentials/private_key|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/private_key", "Value": "your-private-key-here", "Type": "SecureString"}' --overwrite|
-|google/credentials/client_email|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/client_email", "Value": "client-email-here", "Type": "SecureString"}' --overwrite|
-|google/credentials/client_id|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/client_id", "Value": "client-id-here", "Type": "SecureString"}' --overwrite|
-|google/credentials/auth_uri|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/auth_uri", "Value": "https://accounts.google.com/o/oauth2/auth", "Type": "SecureString"}' --overwrite|
-|google/credentials/token_uri|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/token_uri", "Value": "https://oauth2.googleapis.com/token", "Type": "SecureString"}' --overwrite|
-|google/credentials/auth_provider_x509_cert_url|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/auth_provider_x509_cert_url", "Value": "your-auth_provider_x509_cert_url-here", "Type": "SecureString"}' --overwrite|
-|google/credentials/client_x509_cert_url|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/credentials/client_x509_cert_url", "Value": "your-client_x509_cert_url-here", "Type": "SecureString"}' --overwrite|
-|google/metadata/drive-id|Drive id for Google metadata Team Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/metadata/drive-id", "Value": "your-drive-id-here", "Type": "SecureString"}' --overwrite|
-|google/metadata/parent-folder-id|Parent folder id for Google metadata Team Drive folder|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/metadata/parent-folder-id", "Value": "your-parent-folder-id-here", "Type": "SecureString"}' --overwrite|
-|google/image/drive-id|Drive id for Google image Team Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/image/drive-id", "Value": "your-drive-id-here", "Type": "SecureString"}' --overwrite|
-|google/image/parent-folder-id|Parent folder id for Google image Team Drive folder|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/google/image/parent-folder-id", "Value": "your-parent-folder-id-here", "Type": "SecureString"}' --overwrite|
-|sentry/environment|Environment for Sentry (test or prod)|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/sentry/environment", "Value": "test", "Type": "SecureString"}' --overwrite|
-|sentry/dsn|Dsn for Sentry to capture errors and warnings|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/sentry/dsn", "Value": "sentry-dsn-here", "Type": "SecureString"}' --overwrite|
-|sentry/token|Token for Sentry|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/sentry/token", "Value": "sentry-token-here", "Type": "SecureString"}' --overwrite|
-|notification-email-address|Comma separated list of email addresses to be used to notify if required metadata fields are missing|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/notification-email-address", "Value": "someone@somewhere.com", "Type": "SecureString"}' --overwrite|
-|no-reply-email-address|Email address of sender for warnings email|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-embark-loader/test/no-reply-email-address", "Value": "do.not.reply@nd.edu", "Type": "SecureString"}' --overwrite|
+|google/credentials/type|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/type", "Value": "service_account", "Type": "SecureString"}' --overwrite|
+|google/credentials/project_id|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/project_id", "Value": "webkiosk", "Type": "SecureString"}' --overwrite|
+|google/credentials/private_key_id|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/private_key_id", "Value": "your-private-key-id-here", "Type": "SecureString"}' --overwrite|
+|google/credentials/private_key|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/private_key", "Value": "your-private-key-here", "Type": "SecureString"}' --overwrite|
+|google/credentials/client_email|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/client_email", "Value": "client-email-here", "Type": "SecureString"}' --overwrite|
+|google/credentials/client_id|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/client_id", "Value": "client-id-here", "Type": "SecureString"}' --overwrite|
+|google/credentials/auth_uri|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/auth_uri", "Value": "https://accounts.google.com/o/oauth2/auth", "Type": "SecureString"}' --overwrite|
+|google/credentials/token_uri|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/token_uri", "Value": "https://oauth2.googleapis.com/token", "Type": "SecureString"}' --overwrite|
+|google/credentials/auth_provider_x509_cert_url|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/auth_provider_x509_cert_url", "Value": "your-auth_provider_x509_cert_url-here", "Type": "SecureString"}' --overwrite|
+|google/credentials/client_x509_cert_url|Part of the credentials for Google Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/credentials/client_x509_cert_url", "Value": "your-client_x509_cert_url-here", "Type": "SecureString"}' --overwrite|
+|google/metadata/drive-id|Drive id for Google metadata Team Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/metadata/drive-id", "Value": "your-drive-id-here", "Type": "SecureString"}' --overwrite|
+|google/metadata/parent-folder-id|Parent folder id for Google metadata Team Drive folder|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/metadata/parent-folder-id", "Value": "your-parent-folder-id-here", "Type": "SecureString"}' --overwrite|
+|google/image/drive-id|Drive id for Google image Team Drive|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/image/drive-id", "Value": "your-drive-id-here", "Type": "SecureString"}' --overwrite|
+|google/image/parent-folder-id|Parent folder id for Google image Team Drive folder|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/google/image/parent-folder-id", "Value": "your-parent-folder-id-here", "Type": "SecureString"}' --overwrite|
+|sentry/environment|Environment for Sentry (test or prod)|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/sentry/environment", "Value": "test", "Type": "SecureString"}' --overwrite|
+|sentry/dsn|Dsn for Sentry to capture errors and warnings|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/sentry/dsn", "Value": "sentry-dsn-here", "Type": "SecureString"}' --overwrite|
+|sentry/token|Token for Sentry|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/sentry/token", "Value": "sentry-token-here", "Type": "SecureString"}' --overwrite|
+|museum-notification-email-address|Comma separated list of email addresses to be used to notify if required metadata fields are missing|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/museum-notification-email-address", "Value": "someone@somewhere.com", "Type": "SecureString"}' --overwrite|
+|no-reply-email-address|Email address of sender for warnings email|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/no-reply-email-address", "Value": "do.not.reply@nd.edu", "Type": "SecureString"}' --overwrite|
 
 
 
@@ -43,7 +43,7 @@ aws-vault exec testlib --session-ttl=1h --assume-role-ttl=1h --
 
 2. An environment variable named SSM_KEY_BASE must be defined to point to the root of Parameter Store:
 ```console
-export SSM_KEY_BASE=/all/marble-embark-loader/test
+export SSM_KEY_BASE=/all/marble-data-processing/test
 ```
 
 3. An environment variable named WEB_KIOSK_EXPORT_MODE must specify "full" or "incremental" metadata retrieval:

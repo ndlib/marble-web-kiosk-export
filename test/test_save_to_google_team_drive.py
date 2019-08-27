@@ -24,8 +24,8 @@ class Test(unittest.TestCase):
     config = get_config()
     google_credentials = config['google']['credentials']
     credentials = _get_credentials_from_service_account_info(google_credentials)
-    snite_metadata_team_drive_id = config['google']['metadata']['drive-id']  # '0AASeuQIa42uxUk9PVA'
-    snite_metadata_folder_id = config['google']['metadata']['parent-folder-id']  # '1F5cgW7ORRGHcpy2fbYiFE528RuDjHnrJ'
+    snite_metadata_team_drive_id = config['google']['museum']['metadata']['drive-id']
+    snite_metadata_folder_id = config['google']['museum']['metadata']['parent-folder-id']
     local_folder_name = 'test'
     file_name = 'test.xml'
 
