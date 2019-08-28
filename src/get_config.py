@@ -46,7 +46,8 @@ def get_config():
                 }
             },
             "sentry": {},
-            "embark": {}
+            "embark": {},
+            "museum": {}
         }
         _get_parameter_store_config(config)
     return config
@@ -89,6 +90,9 @@ def _get_parameter_store_config(config):
         elif 'embark/' in key:
             key = key.replace('embark/', '')
             config['embark'][key] = value
+        elif 'museum/' in key:
+            key = key.replace('museum/', '')
+            config['museum'][key] = value
         else:
             config[key] = value
     return config

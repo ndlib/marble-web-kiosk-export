@@ -63,9 +63,10 @@ verify_parameter_store_value_exists "/all/marble-data-processing/test/sentry/dsn
 verify_parameter_store_value_exists "/all/marble-data-processing/test/sentry/token"
 
 get_ssm_parameters_by_path "/all/marble-data-processing/test"
-verify_parameter_store_value_exists "/all/marble-data-processing/test/museum-notification-email-address"
 verify_parameter_store_value_exists "/all/marble-data-processing/test/no-reply-email-address"
 
+get_ssm_parameters_by_path "/all/marble-data-processing/test/museum"
+verify_parameter_store_value_exists "/all/marble-data-processing/test/museum/notification-email-address"
 
 get_ssm_parameters_by_path "/all/marble-data-processing/prod/google/credentials"
 verify_parameter_store_value_exists "/all/marble-data-processing/prod/google/credentials/auth_provider_x509_cert_url"
@@ -99,5 +100,7 @@ verify_parameter_store_value_exists "/all/marble-data-processing/prod/sentry/dsn
 verify_parameter_store_value_exists "/all/marble-data-processing/prod/sentry/token"
 
 get_ssm_parameters_by_path "/all/marble-data-processing/prod"
-verify_parameter_store_value_exists "/all/marble-data-processing/prod/museum-notification-email-address"
 verify_parameter_store_value_exists "/all/marble-data-processing/prod/no-reply-email-address"
+
+get_ssm_parameters_by_path "/all/marble-data-processing/prod/museum"
+verify_parameter_store_value_exists "/all/marble-data-processing/prod/museum/notification-email-address"

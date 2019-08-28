@@ -30,7 +30,7 @@ This code splits that content into individual METS files, and stores them by Id 
 |sentry/environment|Environment for Sentry (test or prod)|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/sentry/environment", "Value": "test", "Type": "SecureString"}' --overwrite|
 |sentry/dsn|Dsn for Sentry to capture errors and warnings|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/sentry/dsn", "Value": "sentry-dsn-here", "Type": "SecureString"}' --overwrite|
 |sentry/token|Token for Sentry|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/sentry/token", "Value": "sentry-token-here", "Type": "SecureString"}' --overwrite|
-|museum-notification-email-address|Comma separated list of email addresses to be used to notify if required metadata fields are missing|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/museum-notification-email-address", "Value": "someone@somewhere.com", "Type": "SecureString"}' --overwrite|
+|museum/notification-email-address|Comma separated list of email addresses to be used to notify if required metadata fields are missing|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/museum/notification-email-address", "Value": "someone@somewhere.com", "Type": "SecureString"}' --overwrite|
 |no-reply-email-address|Email address of sender for warnings email|aws ssm put-parameter --cli-input-json '{"Name":  "/all/marble-data-processing/test/no-reply-email-address", "Value": "do.not.reply@nd.edu", "Type": "SecureString"}' --overwrite|
 
 

@@ -72,7 +72,7 @@ class process_web_kiosk_metadata():
                     break
             if accumulated_missing_fields > '':
                 create_and_send_email_notification(accumulated_missing_fields,
-                                                   self.config['museum-notification-email-address'],
+                                                   self.config['museum']['notification-email-address'],
                                                    self.config['no-reply-email-address'])
         if clean_up_as_we_go:
             delete_file(folder_name, file_name)
