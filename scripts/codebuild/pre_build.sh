@@ -28,8 +28,8 @@ fi
 if [ "$STAGE" = "test" ]
 then
     echo “${magenta}----- Running Unit Tests ------${reset}”
-    python3 -m venv venv
-    source venv/bin/activate
+    # python3 -m venv venv
+    # source venv/bin/activate
     python3 'run_all_tests.py' || { echo “Unit Tests Failed”; exit 1; }
     # source deactivate
 fi

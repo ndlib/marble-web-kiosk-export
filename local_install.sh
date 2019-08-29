@@ -21,8 +21,8 @@ npx npm-check-updates -u
 npm install || { echo "Npm install failed to install updates"; exit 1; }
 popd
 
-Python3 -m venv venv
-source venv/bin/activate
+# Python3 -m venv venv
+# source venv/bin/activate
 #install boto3 in a virtual environment - we don't want to include it in the lambda deploy
 pip install -r requirements.txt  || { echo "Failed to install requirements.txt into virtual directory venv."; exit 1; }
 # install dev pkgs
@@ -30,7 +30,7 @@ dev_req="dev-requirements.txt"
 if test -f "${dev_req}"; then
     pip install -r ${dev_req}
 fi
-source deactivate
+# source deactivate
 
 pushd src
 # install dependencies in dependencies folder that will need to be included with deployed lambda
