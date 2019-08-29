@@ -23,8 +23,8 @@ class Test(unittest.TestCase):
     config['running_unit_tests'] = True
     folder_name = config['folder_name']
     file_name = config['file_name']
-    drive_id = config['google']['metadata']['drive-id']
-    parent_folder_id = config['google']['metadata']['parent-folder-id']
+    drive_id = config['google']['museum']['metadata']['drive-id']
+    parent_folder_id = config['google']['museum']['metadata']['parent-folder-id']
     required_fields = config['required_fields']
     clean_up_as_we_go = False
 

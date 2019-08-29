@@ -39,8 +39,8 @@ class process_web_kiosk_metadata():
     def process_snite_composite_mets_metadata(self, clean_up_as_we_go):
         """ Split big composite metadata file into individual small metadata files """
         google_credentials = self.config['google']['credentials']
-        drive_id = self.config['google']['metadata']['drive-id']
-        parent_folder_id = self.config['google']['metadata']['parent-folder-id']
+        drive_id = self.config['google']['museum']['metadata']['drive-id']
+        parent_folder_id = self.config['google']['museum']['metadata']['parent-folder-id']
         required_fields = self.config['required_fields']
         folder_name = self.config['folder_name']
         file_name = self.config['file_name']
@@ -72,7 +72,7 @@ class process_web_kiosk_metadata():
                     break
             if accumulated_missing_fields > '':
                 create_and_send_email_notification(accumulated_missing_fields,
-                                                   self.config['notification-email-address'],
+                                                   self.config['museum']['notification-email-address'],
                                                    self.config['no-reply-email-address'])
         if clean_up_as_we_go:
             delete_file(folder_name, file_name)

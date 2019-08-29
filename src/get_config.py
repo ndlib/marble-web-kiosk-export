@@ -40,11 +40,14 @@ def get_config():
             },
             "google": {
                 "credentials": {},
-                "metadata": {},
-                "image": {}
+                "museum": {
+                    "metadata": {},
+                    "image": {}
+                }
             },
             "sentry": {},
-            "embark": {}
+            "embark": {},
+            "museum": {}
         }
         _get_parameter_store_config(config)
     return config
@@ -67,7 +70,7 @@ def _get_parameter_store_config(config):
     for ps in response:
         value = ps['Value']
         # value = value.replace('\n', os.linesep)
-        # change /all/marble-embark-loader/<key> to <key>
+        # change /all/marble-data-processing/<key> to <key>
         key = ps['Name'].replace(path, '')
         # add the key/value pair to appropriate hierarchy level
         if 'google/credentials/' in key:
@@ -75,18 +78,21 @@ def _get_parameter_store_config(config):
             if key == 'private_key':
                 value = value + "\n"  # this is to correct Parameter Store's stripping trailing \n for certificate
             config['google']['credentials'][key] = value
-        elif 'google/metadata/' in key:
-            key = key.replace('google/metadata/', '')
-            config['google']['metadata'][key] = value
-        elif 'google/image/' in key:
-            key = key.replace('google/image/', '')
-            config['google']['image'][key] = value
+        elif 'google/museum/metadata/' in key:
+            key = key.replace('google/museum/metadata/', '')
+            config['google']['museum']['metadata'][key] = value
+        elif 'google/museum/image/' in key:
+            key = key.replace('google/museum/image/', '')
+            config['google']['museum']['image'][key] = value
         elif 'sentry/' in key:
             key = key.replace('sentry/', '')
             config['sentry'][key] = value
         elif 'embark/' in key:
             key = key.replace('embark/', '')
             config['embark'][key] = value
+        elif 'museum/' in key:
+            key = key.replace('museum/', '')
+            config['museum'][key] = value
         else:
             config[key] = value
     return config

@@ -13,13 +13,6 @@ template_linter=${template_linter_path}${template_linter_file}
 
 curl ${template_linter} -o ${template_linter_file} -s
 
-# install dev pkgs
-dev_req="dev-requirements.txt"
-if test -f "${dev_req}"; then
-    pip install -r ${dev_req}
-fi
-
-
 pushd deploy/cdk
 # run npm install to install everything listed in package.json
 npm install || { echo "Npm install failed to install everything listed in package.json"; exit 1; }
@@ -28,11 +21,16 @@ npx npm-check-updates -u
 npm install || { echo "Npm install failed to install updates"; exit 1; }
 popd
 
+# Python3 -m venv venv
+# source venv/bin/activate
 #install boto3 in a virtual environment - we don't want to include it in the lambda deploy
-Python3 -m venv venv
-source venv/bin/activate
 pip install -r requirements.txt  || { echo "Failed to install requirements.txt into virtual directory venv."; exit 1; }
-source deactivate
+# install dev pkgs
+dev_req="dev-requirements.txt"
+if test -f "${dev_req}"; then
+    pip install -r ${dev_req}
+fi
+# source deactivate
 
 pushd src
 # install dependencies in dependencies folder that will need to be included with deployed lambda
