@@ -77,7 +77,7 @@ export class MarbleWebKioskExportStack extends cdk.Stack {
           // ],
           environment: {
               SSM_KEY_BASE: `/all/marble-data-processing/${stage === 'prod' ? 'prod' : 'test'}`,
-              WEB_KIOSK_EXPORT_MODE: 'incremental'
+              WEB_KIOSK_EXPORT_MODE: `${stage === 'prod' ? 'incremental' : 'full'}`
           },
           role: embarkLambdaRole,
           timeout: cdk.Duration.seconds(900),
