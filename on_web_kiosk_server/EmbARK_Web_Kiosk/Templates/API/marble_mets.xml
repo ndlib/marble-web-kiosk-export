@@ -48,7 +48,7 @@
             <dcterms:provenance><!--#4DTEXT [Objects_1]Dedication--></dcterms:provenance>
             <!--#4DSCRIPT/LoadRelatedRecords/Objects_1:Keywords-->
             <!--#4DLOOP [Keywords]-->
-              <dcterms:subject><!--#4DTEXT [Keywords]Word--></dcterms:subject>
+              <dcterms:subject authority="AAT" valueURI="http://vocab.getty.edu/aat/<!--#4DTEXT [Keywords]_AAT_SubjectiD-->" ><!--#4DTEXT [Keywords]Word--></dcterms:subject>
             <!--#4DENDLOOP-->
             <dcterms:publisher><!--#4DTEXT <>vtInstitution--></dcterms:publisher>
             </xmlData>
