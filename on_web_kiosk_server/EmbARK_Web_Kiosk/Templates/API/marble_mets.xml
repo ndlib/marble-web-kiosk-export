@@ -48,7 +48,12 @@
             <dcterms:provenance><!--#4DTEXT [Objects_1]Dedication--></dcterms:provenance>
             <!--#4DSCRIPT/LoadRelatedRecords/Objects_1:Keywords-->
             <!--#4DLOOP [Keywords]-->
-              <dcterms:subject authority="AAT" valueURI="http://vocab.getty.edu/aat/<!--#4DTEXT [Keywords]_AAT_SubjectiD-->" ><!--#4DTEXT [Keywords]Word--></dcterms:subject>
+	      <!--#4DIF [Keywords]_Path="Art@"-->
+                <dcterms:subject authority="AAT" valueURI="http://vocab.getty.edu/aat/<!--#4DTEXT [Keywords]_AAT_SubjectiD-->"><!--#4DTEXT [Keywords]Word--></dcterms:subject>
+	      <!--#4DENDIF-->
+	      <!--#4DIF [Keywords]_Path="Icon@"-->
+                <dcterms:subject authority="IA" valueURI="http://vocab.getty.edu/page/ia/<!--#4DTEXT [Keywords]_AAT_SubjectiD-->"><!--#4DTEXT [Keywords]Word--></dcterms:subject>
+	      <!--#4DENDIF-->
             <!--#4DENDLOOP-->
             <dcterms:publisher><!--#4DTEXT <>vtInstitution--></dcterms:publisher>
             </xmlData>
@@ -154,7 +159,7 @@
                 <!--#4DEVAL gsFunc_SortRecords(->[Surrogates]IsPrimary; "<")-->
                 <!--#4DLOOP [Surrogates]-->
                     <!--#4DIF [Surrogates]Web_Access-->
-                <mets:div ORDER="<!--#4DIF [Surrogates]IsPrimary-->1<!--#4DELSE-->2<!--#4DENDIF-->" LABEL="<!--#4DIF [Surrogates]IsPrimary-->primary<!--#4DELSE-->secondary<!--#4DENDIF-->">
+                <mets:div ORDER="<!--#4DIF [Surrogates]IsPrimary-->1<!--#4DELSE-->2<!--#4DENDIF-->" LABEL="<!--#4DTEXT Filename("Surrogates")-->">
                     <fptr FILEID="ID_<!--#4DTEXT Filename("Surrogates")-->" />
                 </mets:div>
                     <!--#4DENDIF-->

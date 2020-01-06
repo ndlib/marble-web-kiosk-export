@@ -1,0 +1,47 @@
+{
+  "fileName": "web_kiosk_mets_composite.xml",
+  "folderName": "/tmp",
+  "mode": "full",
+  "runningUnitTests": false,
+  "deleteLocalCopy": true,
+  "xmlRequiredFields": {
+    "Title": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:title",
+    "Creator": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:creator",
+    "Date created": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:created",
+    "Work Type": "mets:dmdSec/mets:mdWrap/mets:xmlData/vracore:work/vracore:worktypeSet/vracore:worktype",
+    "Medium": "mets:dmdSec/mets:mdWrap/mets:xmlData/vracore:work/vracore:materialSet/vracore:display",
+    "Unique identifier": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:identifier",
+    "Repository": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:publisher",
+    "Subject": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:subject",
+    "Usage": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:rights",
+    "Access": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:accessRights",
+    "Dimensions": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:extent",
+    "Dedication": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:provenance",
+    "Thumbnail": "mets:structMap/mets:div/mets:div/mets:fptr[@FILEID]"
+  },
+  "jsonRequiredFields": {
+    "Title": "title",
+    "Creator": "creator",
+    "Date created": "dateCreated",
+    "Work Type": "workType",
+    "Medium": "medium",
+    "Unique identifier": "uniqueIdentifier",
+    "Repository": "repository",
+    "Subject": "subject",
+    "Usage": "usage",
+    "Access": "access",
+    "Dimensions": "dimensions",
+    "Dedication": "dedication",
+    "Thumbnail": "images"
+  },
+  "google": {
+    "credentials": {},
+    "museum": {
+      "metadata": {},
+      "image": {}
+    }
+  },
+  "sentry": {},
+  "embark": {},
+  "museum": {}
+}

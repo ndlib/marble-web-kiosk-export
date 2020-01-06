@@ -51,7 +51,19 @@ export SSM_KEY_BASE=/all/marble-data-processing/test
 export WEB_KIOSK_EXPORT_MODE=incremental
 ```
 
-4. Run unit tests:
+4. Several additional optional environment variables exist, with pre-defined defaults:
+'HOURS_THRESHOLD' - The time frame to include for incremental changes - defaults to 24 * 3
+'SECONDS_TO_ALLOW_FOR_PROCESSING' - Time to allow for lambda to complete - defaults to 14 * 60
+'MODE' - Defines 'full' or 'incremental' processing - defaults to 'full'
+'PROCESS_METS' - Defines whether to process METS metadata files - defaults to True
+'PROCESS_JSON' - Defines whether to process JSON metadata files - defaults to True
+'SAVE_TO_GOOGLE' - Defines whether to save to Google Team Drive (both METS and JSON) - defaults to True
+'SAVE_TO_S3' - Defines whether to save to S3 (only JSON) - defaults to True
+'OUTPUT_BUCKET' - Defines S3 output bucket for JSON metadata - defaults to 'marble-archives-space-data'
+'OUTPUT_BUCKET_FOLDER' - Defines output folder in S3 bucket for JSON metadata - defaults to 'embark-separated-json-records/'
+
+
+5. Run unit tests:
 ```console
 python test/run_all_tests.py
 ```

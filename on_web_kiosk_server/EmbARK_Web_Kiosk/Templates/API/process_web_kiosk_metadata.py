@@ -19,7 +19,7 @@ from send_notification_email import create_and_send_email_notification  # noqa: 
 from xml_manipulation import get_value_given_xpath, write_xml_output_file, save_string_of_xml_to_disk # noqa: #402
 
 
-class processWebKioskMetsMetadata():
+class process_web_kiosk_metadata():
     def __init__(self, config):
         self.config = config
 

@@ -7,7 +7,7 @@ where_i_am = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(where_i_am)
 sys.path.append(where_i_am + "/dependencies")
 import unittest  # noqa: E402
-from src.process_web_kiosk_metadata import process_web_kiosk_metadata  # noqa: E402
+from src.process_web_kiosk_metadata import processWebKioskMetsMetadata  # noqa: E402
 from src.get_config import get_config  # noqa: E402
 from src.file_system_utilities import delete_file  # noqa: E402
 # from xml.etree.ElementTree import ElementTree, tostring
@@ -20,15 +20,15 @@ class Test(unittest.TestCase):
     #     data = json.load(input_source)
     # input_source.close()
     # config = data["config"]
-    config['running_unit_tests'] = True
-    folder_name = config['folder_name']
-    file_name = config['file_name']
+    config['runningUnitTests'] = True
+    folder_name = config['folderName']
+    file_name = config['fileName']
     drive_id = config['google']['museum']['metadata']['drive-id']
     parent_folder_id = config['google']['museum']['metadata']['parent-folder-id']
-    required_fields = config['required_fields']
+    required_fields = config['xmlRequiredFields']
     clean_up_as_we_go = False
 
-    web_kiosk_class = process_web_kiosk_metadata(config)
+    web_kiosk_class = processWebKioskMetsMetadata(config)
 
     # Note:  Tests are run alphabetically!  I added numbers in the names to force sorting
     def test_1_get_snite_composite_mets_metadata(self):

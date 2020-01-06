@@ -7,6 +7,8 @@
 import boto3
 import os
 import sys
+import io
+import json
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 
@@ -17,38 +19,27 @@ def get_config():
     elif 'WEB_KIOSK_EXPORT_MODE' not in os.environ:
         print('You must define an environment variable called WEB_KIOSK_EXPORT_MODE as "full" or "incremental".')
     else:
-        config = {
-            "file_name": "web_kiosk_mets_composite.xml",
-            "folder_name": "/tmp",
-            "mode": os.environ['WEB_KIOSK_EXPORT_MODE'],
-            # "mode": "full",
-            "running_unit_tests": False,
-            "required_fields": {
-                "Title": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:title",
-                "Creator": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:creator",
-                "Date created": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:created",
-                "Work Type": "mets:dmdSec/mets:mdWrap/mets:xmlData/vracore:work/vracore:worktypeSet/vracore:worktype",
-                "Medium": "mets:dmdSec/mets:mdWrap/mets:xmlData/vracore:work/vracore:materialSet/vracore:display",
-                "Unique identifier": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:identifier",
-                "Repository": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:publisher",
-                "Subject": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:subject",
-                "Usage": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:rights",
-                "Access": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:accessRights",
-                "Dimensions": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:extent",
-                "Dedication": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:provenance",
-                "Thumbnail": "mets:structMap/mets:div/mets:div/mets:fptr[@FILEID]"
-            },
-            "google": {
-                "credentials": {},
-                "museum": {
-                    "metadata": {},
-                    "image": {}
-                }
-            },
-            "sentry": {},
-            "embark": {},
-            "museum": {}
-        }
+        # start by reading in configuration file
+        filename = 'config.json'
+        if not os.path.exists(filename):
+            filename = 'src/config.json'
+        if os.path.exists(filename):
+            with io.open(filename, 'r', encoding='utf-8') as json_file:
+                config = json.load(json_file)
+        else:
+            print('Unable to find config.json.  Unable to continue.')
+            return config
+        # add any environment variables (with defaults if missing)
+        config['hoursThreshold'] = int(_check_environment_variable('HOURS_THRESHOLD', 24 * 3))
+        config['secondsToAllowForProcessing'] = int(_check_environment_variable('SECONDS_TO_ALLOW_FOR_PROCESSING', 30 * 60))  # noqa: E501
+        config['mode'] = _check_environment_variable('MODE', 'full')
+        config['processMets'] = _check_environment_variable('PROCESS_METS', True)
+        config['processJson'] = _check_environment_variable('PROCESS_JSON', True)
+        config['saveToGoogle'] = _check_environment_variable('SAVE_TO_GOOGLE', True)
+        config['saveToS3'] = _check_environment_variable('SAVE_TO_S3', True)
+        config['outputBucket'] = _check_environment_variable('OUTPUT_BUCKET', 'marble-archives-space-data')
+        config['outputBucketFolder'] = _check_environment_variable('OUTPUT_BUCKET_FOLDER', 'embark-separated-json-records/')  # noqa: E501
+
         _get_parameter_store_config(config)
     return config
 
@@ -96,3 +87,10 @@ def _get_parameter_store_config(config):
         else:
             config[key] = value
     return config
+
+
+def _check_environment_variable(variable_name, default):
+    return_value = default
+    if variable_name in os.environ:
+        return_value = os.environ[variable_name]
+    return return_value

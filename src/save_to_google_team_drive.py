@@ -21,15 +21,15 @@ def _get_credentials_from_service_account_info(google_credentials):
     return(credentials)
 
 
-def save_file_to_google_team_drive(google_credentials, drive_id, parent_folder_id, local_folder_name, file_name):
+def save_file_to_google_team_drive(google_credentials, drive_id, parent_folder_id, local_folder_name, file_name, mime_type='text/xml'):  # noqa E501
     """ If file exists, update it, else do initial upload """
     # credentials = _get_credentials_from_service_account_file()
     credentials = _get_credentials_from_service_account_info(google_credentials)
     file_id = _get_file_id_given_filename(credentials, drive_id, parent_folder_id, file_name)
     if file_id > "":
-        _update_existing_file(credentials, parent_folder_id, file_id, local_folder_name, file_name)
+        _update_existing_file(credentials, parent_folder_id, file_id, local_folder_name, file_name, mime_type)
     else:
-        file_id = _upload_new_file(credentials, drive_id, parent_folder_id, local_folder_name, file_name)
+        file_id = _upload_new_file(credentials, drive_id, parent_folder_id, local_folder_name, file_name, mime_type)
     return(file_id)
 
 
