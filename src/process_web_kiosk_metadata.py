@@ -20,8 +20,9 @@ from xml_manipulation import get_value_given_xpath, write_xml_output_file, save_
 
 
 class processWebKioskMetsMetadata():
-    def __init__(self, config):
+    def __init__(self, config, google_connection):
         self.config = config
+        self.google_connection = google_connection
 
     def get_snite_composite_mets_metadata(self):
         """ Build URL, call URL, save resulting output to disk """
@@ -38,7 +39,7 @@ class processWebKioskMetsMetadata():
 
     def process_snite_composite_mets_metadata(self, clean_up_as_we_go):
         """ Split big composite metadata file into individual small metadata files """
-        google_credentials = self.config['google']['credentials']
+        # google_credentials = self.config['google']['credentials']
         drive_id = self.config['google']['museum']['metadata']['drive-id']
         parent_folder_id = self.config['google']['museum']['metadata']['parent-folder-id']
         required_fields = self.config['xmlRequiredFields']
@@ -61,7 +62,7 @@ class processWebKioskMetsMetadata():
                     accumulated_missing_fields += missing_fields
                 local_file_name = object_id + '.xml'
                 write_xml_output_file(folder_name, local_file_name, object_xml)
-                save_file_to_google_team_drive(google_credentials,
+                save_file_to_google_team_drive(self.google_connection,  # google_credentials,
                                                drive_id,
                                                parent_folder_id,
                                                folder_name,

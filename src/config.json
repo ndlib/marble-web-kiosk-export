@@ -1,9 +1,11 @@
 {
   "fileName": "web_kiosk_mets_composite.xml",
   "folderName": "/tmp",
+  "localCSVOutputFolder": "/tmp/museum/csv/",
+  "defaultCSVFileName": "root.csv",
   "mode": "full",
   "runningUnitTests": false,
-  "deleteLocalCopy": true,
+  "deleteLocalCopy": false,
   "xmlRequiredFields": {
     "Title": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:title",
     "Creator": "mets:dmdSec/mets:mdWrap/mets:xmlData/dcterms:creator",
@@ -27,13 +29,21 @@
     "Medium": "medium",
     "Unique identifier": "uniqueIdentifier",
     "Repository": "repository",
-    "Subject": "subject",
+    "Subject": "subjects",
     "Usage": "usage",
     "Access": "access",
     "Dimensions": "dimensions",
     "Dedication": "dedication",
-    "Thumbnail": "images"
+    "Thumbnail": "digitalAssets"
   },
+  "csvFieldNames": ["sourceSystem", "repository", "collectionId", "parentId", "myId", "level", "title", "creator",
+       "dateCreated", "uniqueIdentifier", "dimensions", "languages", "subjects", "usage", "license", "linkToSource",
+        "access", "format", "dedication", "description", "modifiedDate", "thumbnail", "filePath", "fileId", "sequence",
+        "collectionInformation", "fileInfo", "classification", "workType", "medium", "artists", "digitalAssets",
+        "width", "height", "etag", "md5Checksum"
+  ],
+  "csvFieldNamesIntionallyExcluded": ["digitalAssets", "children"
+  ],
   "google": {
     "credentials": {},
     "museum": {
