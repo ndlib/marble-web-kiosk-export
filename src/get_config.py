@@ -37,8 +37,8 @@ def get_config():
         config['processJson'] = _check_environment_variable('PROCESS_JSON', True)
         config['saveJsonToGoogle'] = _check_environment_variable('SAVE_JSON_TO_GOOGLE', False)
         config['saveToS3'] = _check_environment_variable('SAVE_TO_S3', True)
-        config['outputBucket'] = _check_environment_variable('OUTPUT_BUCKET', 'marble-archives-space-data')
-        config['outputBucketFolder'] = _check_environment_variable('OUTPUT_BUCKET_FOLDER', 'embark-separated-json-records/')  # noqa: E501
+        # config['outputBucket'] = _check_environment_variable('OUTPUT_BUCKET', 'marble-archives-space-data')
+        # config['outputBucketFolder'] = _check_environment_variable('OUTPUT_BUCKET_FOLDER', 'embark-separated-json-records/')  # noqa: E501
 
         _get_parameter_store_config(config)
     return config

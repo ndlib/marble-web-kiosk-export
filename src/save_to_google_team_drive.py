@@ -6,37 +6,24 @@ import sys
 where_i_am = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(where_i_am)
 sys.path.append(where_i_am + "/dependencies")
-from google.oauth2 import service_account  # noqa: E402
-from googleapiclient.discovery import build  # noqa: E402
+# from google.oauth2 import service_account  # noqa: E402
+# from googleapiclient.discovery import build  # noqa: E402
 from googleapiclient.http import MediaFileUpload  # noqa: E402
-
-
-# def _get_credentials_from_service_account_info(google_credentials):
-#     """ Return credentials given service account file and assumptions of scopes needed """
-#     service_account_info = google_credentials
-#     credentials = ""
-#     # Scopes are defined here:  https://developers.google.com/identity/protocols/googlescopes
-#     SCOPES = ['https://www.googleapis.com/auth/drive']
-#     credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
-#     return(credentials)
 
 
 def save_file_to_google_team_drive(google_connection, drive_id, parent_folder_id, local_folder_name, file_name, mime_type='text/xml'):  # noqa E501
     """ If file exists, update it, else do initial upload """
-    # credentials = _get_credentials_from_service_account_file()
-    # credentials = _get_credentials_from_service_account_info(google_credentials)
     file_id = _get_file_id_given_filename(google_connection, drive_id, parent_folder_id, file_name)
     if file_id > "":
         _update_existing_file(google_connection, parent_folder_id, file_id, local_folder_name, file_name, mime_type)
     else:
-        file_id = _upload_new_file(google_connection, drive_id, parent_folder_id, local_folder_name, file_name, mime_type)
+        file_id = _upload_new_file(google_connection, drive_id, parent_folder_id, local_folder_name, file_name, mime_type)  # noqa: E501
     return(file_id)
 
 
 def _get_file_id_given_filename(google_connection, drive_id, parent_folder_id, file_name):
     """ Find a File_Id given drive, parent folder, and file_name """
     file_id = ""
-    # service = build('drive', 'v3', credentials=credentials)
     nextPageToken = ""
     query_string = "name='" + file_name + "'" + " and '" + parent_folder_id + "' in parents"
     query_string += " and trashed = False"
@@ -58,13 +45,12 @@ def _get_file_id_given_filename(google_connection, drive_id, parent_folder_id, f
     return file_id
 
 
-def _update_existing_file(google_connection, parent_folder_id, file_id, local_folder_name, file_name, mime_type='text/xml'):
+def _update_existing_file(google_connection, parent_folder_id, file_id, local_folder_name, file_name, mime_type='text/xml'):    # noqa: E501
     """ upload new content for existing file_id """
     full_path_file_name = _get_full_path_file_name(local_folder_name, file_name)
     media = MediaFileUpload(full_path_file_name,
                             mimetype=mime_type,
                             resumable=True)  # 'image/jpeg'
-    # drive_service = build('drive', 'v3', credentials=credentials)
     file = google_connection.files().update(fileId=file_id,
                                             media_body=media,
                                             supportsAllDrives=True,
@@ -72,7 +58,7 @@ def _update_existing_file(google_connection, parent_folder_id, file_id, local_fo
     return(file.get('id'))
 
 
-def _upload_new_file(google_connection, drive_id, parent_folder_id, local_folder_name, file_name, mime_type='text/xml'):
+def _upload_new_file(google_connection, drive_id, parent_folder_id, local_folder_name, file_name, mime_type='text/xml'):  # noqa: E501
     """ Upload an all new file (note, this will produce duplicates,
         so check for existance before calling this) """
     full_path_file_name = _get_full_path_file_name(local_folder_name, file_name)
@@ -82,7 +68,6 @@ def _upload_new_file(google_connection, drive_id, parent_folder_id, local_folder
     media = MediaFileUpload(full_path_file_name,
                             mimetype=mime_type,
                             resumable=True)  # 'image/jpeg'
-    # drive_service = build('drive', 'v3', credentials=credentials)
     file = google_connection.files().create(body=file_metadata,
                                             media_body=media,
                                             supportsAllDrives=True,
@@ -101,6 +86,5 @@ def _get_full_path_file_name(local_folder_name, file_name):
 def _delete_existing_file(google_connection, file_id):
     """ Delete an existing file given file_id """
     # note: user needs "organizer" privilege on the parent folder in order to delete
-    # drive_service = build('drive', 'v3', credentials=credentials)
     google_connection.files().delete(fileId=file_id,
                                      supportsAllDrives=True).execute()

@@ -43,7 +43,7 @@ def execute_google_query(google_connection, drive_id, query_string):
             results = google_connection.files().list(
                 pageSize=1000,  # 1000 is the maximum pageSize allowed
                 pageToken=nextPageToken,
-                fields="kind, nextPageToken, incompleteSearch, files(id, name, mimeType, parents, driveId, size, md5Checksum, modifiedTime)",
+                fields="kind, nextPageToken, incompleteSearch, files(id, name, mimeType, parents, driveId, size, md5Checksum, modifiedTime)",  # noqa: E501
                 supportsAllDrives="true",  # required if writing to a team drive
                 driveId=drive_id,
                 includeItemsFromAllDrives="true",  # required if querying from a team drive

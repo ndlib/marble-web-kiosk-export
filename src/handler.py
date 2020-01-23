@@ -63,5 +63,6 @@ def run(event, context):
 # python 'run_all_tests.py'
 def test():
     """ test exection """
-    data = {}
-    print(run(data, {}))
+    event = {}
+
+    print(run(event, {}))

@@ -10,25 +10,21 @@ import unittest  # noqa: E402
 from src.process_web_kiosk_metadata import processWebKioskMetsMetadata  # noqa: E402
 from src.get_config import get_config  # noqa: E402
 from src.file_system_utilities import delete_file  # noqa: E402
-# from xml.etree.ElementTree import ElementTree, tostring
+from src.google_utilities import establish_connection_with_google_api  # noqa: E402
 
 
 class Test(unittest.TestCase):
     """ Class for test fixtures """
     config = get_config()
-    # with open("config.json", 'r') as input_source:
-    #     data = json.load(input_source)
-    # input_source.close()
-    # config = data["config"]
     config['runningUnitTests'] = True
-    folder_name = config['folderName']
-    file_name = config['fileName']
+    folder_name = "/tmp"
+    file_name = "web_kiosk_mets_composite.xml"
     drive_id = config['google']['museum']['metadata']['drive-id']
     parent_folder_id = config['google']['museum']['metadata']['parent-folder-id']
     required_fields = config['xmlRequiredFields']
     clean_up_as_we_go = False
-
-    web_kiosk_class = processWebKioskMetsMetadata(config)
+    google_connection = establish_connection_with_google_api(config['google']['credentials'])
+    web_kiosk_class = processWebKioskMetsMetadata(config, google_connection)
 
     # Note:  Tests are run alphabetically!  I added numbers in the names to force sorting
     def test_1_get_snite_composite_mets_metadata(self):
@@ -48,7 +44,7 @@ class Test(unittest.TestCase):
         print('3 - test_process_snite_composite_mets_metadata')
         self.config['mode'] = 'incremental'
         self.clean_up_as_we_go = True
-        self.web_kiosk_class.__init__(self.config)
+        # self.web_kiosk_class.__init__(self.config)
         xml_as_string = self.web_kiosk_class.get_snite_composite_mets_metadata()
         if xml_as_string > '':
             namespace_dictionary = self.web_kiosk_class.process_snite_composite_mets_metadata(self.clean_up_as_we_go)

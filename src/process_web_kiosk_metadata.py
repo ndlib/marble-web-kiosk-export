@@ -23,30 +23,31 @@ class processWebKioskMetsMetadata():
     def __init__(self, config, google_connection):
         self.config = config
         self.google_connection = google_connection
+        self.folder_name = "/tmp"
+        self.file_name = "web_kiosk_mets_composite.xml"
 
     def get_snite_composite_mets_metadata(self):
         """ Build URL, call URL, save resulting output to disk """
         embark_server_address = self.config['embark']['server-address']
         mode = self.config['mode']
-        folder_name = self.config['folderName']
-        file_name = self.config['fileName']
+        # folder_name = self.config['folderName']
+        # file_name = self.config['fileName']
         xml_as_string = ''
         url = self._get_snite_metadata_url(embark_server_address, mode)
         xml_as_string = self._get_metadata_given_url(url)
         if xml_as_string > '':
-            save_string_of_xml_to_disk(folder_name, file_name, xml_as_string)
+            save_string_of_xml_to_disk(self.folder_name, self.file_name, xml_as_string)
         return xml_as_string
 
     def process_snite_composite_mets_metadata(self, clean_up_as_we_go):
         """ Split big composite metadata file into individual small metadata files """
-        # google_credentials = self.config['google']['credentials']
         drive_id = self.config['google']['museum']['metadata']['drive-id']
         parent_folder_id = self.config['google']['museum']['metadata']['parent-folder-id']
         required_fields = self.config['xmlRequiredFields']
-        folder_name = self.config['folderName']
-        file_name = self.config['fileName']
+        # folder_name = self.config['folderName']
+        # file_name = self.config['fileName']
         accumulated_missing_fields = ''
-        xml, namespace_dictionary = self._read_big_metadata_file(folder_name, file_name)
+        xml, namespace_dictionary = self._read_big_metadata_file(self.folder_name, self.file_name)
         if namespace_dictionary != {}:
             for item in xml.findall('mets:mets', namespace_dictionary):
                 to_find = 'mets:dmdSec[@ID="DSC_01_SNITE"]/mets:mdWrap[@MDTYPE="DC"]/mets:xmlData/dcterms:identifier'
@@ -61,14 +62,14 @@ class processWebKioskMetsMetadata():
                 if missing_fields > '':
                     accumulated_missing_fields += missing_fields
                 local_file_name = object_id + '.xml'
-                write_xml_output_file(folder_name, local_file_name, object_xml)
+                write_xml_output_file(self.folder_name, local_file_name, object_xml)
                 save_file_to_google_team_drive(self.google_connection,  # google_credentials,
                                                drive_id,
                                                parent_folder_id,
-                                               folder_name,
+                                               self.folder_name,
                                                local_file_name)
                 if clean_up_as_we_go:
-                    delete_file(folder_name, local_file_name)
+                    delete_file(self.folder_name, local_file_name)
                 if self.config['runningUnitTests']:
                     break
             if accumulated_missing_fields > '':
@@ -76,7 +77,7 @@ class processWebKioskMetsMetadata():
                                                    self.config['museum']['notification-email-address'],
                                                    self.config['no-reply-email-address'])
         if clean_up_as_we_go:
-            delete_file(folder_name, file_name)
+            delete_file(self.folder_name, self.file_name)
         return namespace_dictionary
 
     def _add_xsi_to_root(self, root):

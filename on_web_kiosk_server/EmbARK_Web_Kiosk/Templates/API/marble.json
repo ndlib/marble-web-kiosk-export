@@ -51,14 +51,19 @@
 		"dimensions": "<!--#4DTEXT [Objects_1]Disp_Dimen-->",
 		"dedication": "<!--#4DTEXT [Objects_1]Dedication-->",
 		"description": "<!--#4DSCRIPT/LoadRelatedRecords/Objects_1:Object_Notes--><!--#4DLOOP [Object_Notes]--><!--#4DIF [Object_Notes]Field_Name="Web Description"--><!--#4DEVAL $fieldString := [Object_Notes]Text --><!--#4DEVAL $fieldString := replace string($fieldString;char(tab);"";*) --><!--#4DEVAL $fieldString := replace string($fieldString;char(carriage return);"%20";*) --><!--#4DEVAL replace string($fieldString;char(line feed);"%20";*) --><!--4DENDIF--><!--#4DENDLOOP-->",
-		"myId": "<!--#4DSCRIPT/SQL_Encode/[Objects_1]Disp_Access_No-->",
+		"id": "<!--#4DSCRIPT/SQL_Encode/[Objects_1]Disp_Access_No-->",
 		<!--#4DEVAL my_Id := [Objects_1]Disp_Access_No-->
 		 <!--#4Dif gsFunc_ObjectHasRelatedObjects ($currentObjectId; "Parent")-->
+			<!--#4Dif False-->
 			  <!--#4DEVAL gsFunc_SortRecords(->[Objects_1]Disp_Access_No; ">")-->
 				  <!--#4DLOOP [Objects_1]-->
-			"collectionId": "<!--#4Dtext [Objects_1]Disp_Access_No-->",
-			"parentId": "<!--#4Dtext [Objects_1]Disp_Access_No-->",
+				"collectionId": "<!--#4Dtext [Objects_1]Disp_Access_No-->",
+				"parentId": "<!--#4Dtext [Objects_1]Disp_Access_No-->",
 				  <!--#4DENDLOOP-->
+			 <!--#4Delse-->
+				"collectionId": "<!--#4DEVAL my_Id-->",
+				"parentId": "root",
+			<!--#4DEndIf-->
 		 <!--#4Delse-->
 			"collectionId": "<!--#4DEVAL my_Id-->",
 			"parentId": "root",
@@ -68,7 +73,7 @@
 					  <!--#4DEVAL $childrenExist := 1 -->
 						<!--#4DEVAL gsFunc_SortRecords(->[Objects_1]Disp_Access_No; ">")-->
                           <!--#4DLOOP [Objects_1]-->
-                              {"myId": "<!--#4Dtext [Objects_1]Disp_Access_No-->"}
+                              {"id": "<!--#4Dtext [Objects_1]Disp_Access_No-->"}
 							<!--#4Dif (Selected Record Number([Objects_1])< Records in Selection([Objects_1])) -->,<!--#4Dendif-->
                           <!--#4DENDLOOP-->
                       <!--#4Dendif-->
@@ -103,7 +108,7 @@
                 <!--#4DENDLOOP-->
 		],
 		<!--#4DIF $childrenExist = 1 -->
-			"level": "collection"
+			"level": "manifest"  <!--#4DIF False --> used to be "collection" <!--#4DEndIf -->
 		<!--#4DELSE -->
 			"level": "manifest"
 		<!--#4DENDIF -->

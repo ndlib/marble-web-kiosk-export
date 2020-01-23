@@ -4,7 +4,6 @@
     These individual json files are saved locally by object name.
     They are then uploaded to a Google Team Drive, and deleted locally. """
 
-# from urllib import request, error
 import json
 import requests
 from datetime import datetime, timedelta
@@ -15,7 +14,6 @@ where_i_am = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(where_i_am)
 sys.path.append(where_i_am + "/dependencies")
 from sentry_sdk import capture_message, push_scope, capture_exception  # noqa: E402
-# from xml.etree.ElementTree import ElementTree, register_namespace, iterparse   # noqa: E402
 from save_to_google_team_drive import save_file_to_google_team_drive  # noqa: E402
 from file_system_utilities import delete_file, get_full_path_file_name, copy_file_from_local_to_s3  # noqa: E402
 from send_notification_email import create_and_send_email_notification  # noqa: E402
@@ -27,12 +25,11 @@ from google_utilities import execute_google_query  # noqa: E402
 class processWebKioskJsonMetadata():
     def __init__(self, config, google_connection):
         self.config = config
-        self.folder_name = self.config['folderName']
+        self.folder_name = "/tmp"
         self.file_name = 'web_kiosk_composite_metadata.json'
         self.composite_json = {}
-        if self.config['saveToS3']:
-            s3 = boto3.resource('s3')
-            self.bucket = s3.Bucket(self.config['outputBucket'])
+        s3 = boto3.resource('s3')
+        self.bucket = s3.Bucket(self.config['process-bucket'])
         self.google_connection = google_connection
         self.image_files = {}
 
@@ -95,44 +92,34 @@ class processWebKioskJsonMetadata():
 
     def _process_one_json_object(self, object):
         object_id = object['uniqueIdentifier']
-        missing_fields = self._save_museum_json_metadata(object, object_id)
-        local_folder_name = self.config["localCSVOutputFolder"]
+        print("Processing JSON: ", object_id)
+        if 'modifiedDate' in object:
+            object['modifiedDate'] = datetime.strptime(object['modifiedDate'], '%m/%d/%Y %H:%M:%S').isoformat() + 'Z'
+        missing_fields = self._test_for_missing_fields(object_id,
+                                                       object,
+                                                       self.config['jsonRequiredFields'])
+        # missing_fields = self._save_museum_json_metadata(object, object_id) # Stop saving JSON for now
         csv_file_name = object_id + '.csv'
-        write_csv_header(local_folder_name, csv_file_name, self.config["csvFieldNames"])  # noqa: E501
-        append_to_csv(local_folder_name, csv_file_name, self.config["csvFieldNames"], object, self.config["csvFieldNamesIntionallyExcluded"])  # noqa: E501
+        write_csv_header(self.folder_name, csv_file_name, self.config["csv-field-names"])  # noqa: E501
+        append_to_csv(self.folder_name, csv_file_name, self.config["csv-field-names"], object, ["children"])  # noqa: E501
         sequence = 0
         if 'digitalAssets' in object:
             for digital_asset in object['digitalAssets']:
-                self._write_file_csv_record(object, digital_asset, sequence, local_folder_name, csv_file_name)
+                self._write_file_csv_record(object, digital_asset, sequence, self.folder_name, csv_file_name)
                 sequence += 1
-        # print("Processing JSON:", object_id)
-        # local_file_name = object_id + '.json'
-        # fully_qualified_file_name = get_full_path_file_name(self.folder_name, local_file_name)
-        # with open(fully_qualified_file_name, 'w') as f:
-        #     json.dump(object, f)
-        # missing_fields = self._test_for_missing_fields(object_id,
-        #                                                object,
-        #                                                self.config['jsonRequiredFields'])
-        # if self.config['saveJsonToGoogle']:
-        #     save_file_to_google_team_drive(self.google_connection,  # self.config['google']['credentials'],
-        #                                    self.config['google']['museum']['metadata']['drive-id'],
-        #                                    self.config['google']['museum']['metadata']['parent-folder-id'],
-        #                                    self.folder_name,
-        #                                    local_file_name,
-        #                                    "application/json")
-        # if self.config['saveToS3']:
-        #     s3_location = get_full_path_file_name(self.config['outputBucketFolder'], local_file_name)
-        #     copy_file_from_local_to_s3(self.bucket, s3_location, self.folder_name, local_file_name)  # noqa E501
-        # if self.config['deleteLocalCopy']:
-        #     delete_file(self.folder_name, local_file_name)
+        s3_file_name = get_full_path_file_name(self.config['process-bucket-csv-basepath'], csv_file_name)
+        if copy_file_from_local_to_s3(self.bucket, s3_file_name, self.folder_name, csv_file_name):
+            delete_file(self.folder_name, csv_file_name)
         return missing_fields
 
     def _write_file_csv_record(self, object, digital_asset, sequence, local_folder_name, csv_file_name):
         each_file_dict = {}
         each_file_dict['collectionId'] = object['collectionId']
-        each_file_dict['parentId'] = object['myId']
+        each_file_dict['parentId'] = object['id']
+        each_file_dict['sourceSystem'] = object['sourceSystem']
+        each_file_dict['repository'] = object['repository']
         file_name = (digital_asset['fileDescription'])
-        each_file_dict['myId'] = file_name
+        each_file_dict['id'] = file_name
         if file_name in self.image_files:
             google_image_info = self.image_files[file_name]
             each_file_dict['thumbnail'] = (sequence == 0)
@@ -140,15 +127,16 @@ class processWebKioskJsonMetadata():
             each_file_dict['description'] = file_name
             each_file_dict['fileInfo'] = google_image_info
             each_file_dict['md5Checksum'] = google_image_info['md5Checksum']
-            each_file_dict['filePath'] = 'https://drive.google.com/a/nd.edu/file/d/' + google_image_info['id'] + '/view'  # '/view?usp=sharing'
+            each_file_dict['filePath'] = 'https://drive.google.com/a/nd.edu/file/d/' + google_image_info['id'] + '/view'  # noqa: E501
             each_file_dict['sequence'] = sequence
             each_file_dict['title'] = file_name
+            each_file_dict['fileId'] = google_image_info['id']
             each_file_dict['modifiedDate'] = google_image_info['modifiedTime']
-            append_to_csv(local_folder_name, csv_file_name, self.config["csvFieldNames"], each_file_dict, self.config["csvFieldNamesIntionallyExcluded"])  # noqa: E501
+            each_file_dict['mimeType'] = google_image_info['mimeType']
+            append_to_csv(local_folder_name, csv_file_name, self.config["csv-field-names"], each_file_dict, ["children"])  # noqa: E501
         return
 
     def _save_museum_json_metadata(self, object, object_id):
-        print("Processing JSON:", object_id)
         local_file_name = object_id + '.json'
         fully_qualified_file_name = get_full_path_file_name(self.folder_name, local_file_name)
         with open(fully_qualified_file_name, 'w') as f:
@@ -163,11 +151,9 @@ class processWebKioskJsonMetadata():
                                            self.folder_name,
                                            local_file_name,
                                            "application/json")
-        if self.config['saveToS3']:
-            s3_location = get_full_path_file_name(self.config['outputBucketFolder'], local_file_name)
-            copy_file_from_local_to_s3(self.bucket, s3_location, self.folder_name, local_file_name)  # noqa E501
-        if self.config['deleteLocalCopy']:
-            delete_file(self.folder_name, local_file_name)
+        # s3_location = get_full_path_file_name(self.config['process-bucket-csv-basepath'], local_file_name)
+        # copy_file_from_local_to_s3(self.bucket, s3_location, self.folder_name, local_file_name)  # noqa E501
+        delete_file(self.folder_name, local_file_name)
         return missing_fields
 
     def _get_metadata_given_url(self, url):
